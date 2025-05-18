@@ -49,7 +49,7 @@ def display_resources(resources, city, zip_code, state, service):
                 f"- Services: {', '.join(res['Services'])}\n"
             )
             st.markdown(info)
-            speak_text(f"Resource {i}: {res['Name']}.")
+            speak_text(f"Resource {i}: {res['Name']}, located at {res['Address']}, {res['City']}, {res['State']}.")
 
 # Load resources
 resources = load_resources("healthCare_test_dataset.csv")
@@ -57,6 +57,29 @@ reminders = []
 
 # Streamlit UI
 st.title("Accessible Health Resource Finder and Reminder")
+
+# Accessibility settings
+st.header("Accessibility Settings")
+font_size_choice = st.radio("Choose font size:", ["Normal", "Large"])
+color_blind_mode = st.checkbox("Enable color-blind friendly colors")
+
+if font_size_choice == "Large":
+    st.markdown("""
+        <style>
+        body, .stText, .stMarkdown {
+            font-size: 18px !important;
+        }
+        </style>
+        """, unsafe_allow_html=True)
+
+if color_blind_mode:
+    st.markdown("""
+        <style>
+        .css-18e3th9 { background-color: #fffde7 !important; }
+        button { background-color: #0072B2 !important; color: white !important; }
+        a, .stMarkdown, .stText { color: #D55E00 !important; }
+        </style>
+    """, unsafe_allow_html=True)
 
 # Service dropdown list
 services = [
@@ -92,7 +115,9 @@ if st.button("Add Reminder"):
     })
     st.success("Reminder added!")
     speak_text("Reminder added!")
-    st.header("Your Health Appointment Reminders")
-    for i, rem in enumerate(reminders, 1):
-        st.markdown(f"**{i}. {rem['date_time']} - {rem['description']} at {rem['location']} (Phone: {rem['phone']})**")
-        speak_text(f"Reminder {i}: {rem['description']} at {rem['location']} on {rem['date_time']}.")
+
+# List reminders
+st.header("Your Health Appointment Reminders")
+for i, rem in enumerate(reminders, 1):
+    st.markdown(f"**{i}. {rem['date_time']} - {rem['description']} at {rem['location']} (Phone: {rem['phone']})**")
+    speak_text(f"Reminder {i}: {rem['description']} at {rem['location']} on {rem['date_time']}.")
