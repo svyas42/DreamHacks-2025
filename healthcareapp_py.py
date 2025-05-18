@@ -26,14 +26,22 @@ def load_resources(filename):
         st.error(f"Error loading resources: {e}")
         return []
 
-# Display resources
-def display_resources(resources, city, zip_code, state, service):
-    filtered = [res for res in resources if
-                (city in res["City"].lower() or not city) and
-                (zip_code == res["ZIP"] or not zip_code) and
-                (state in res["State"].lower() or not state) and
-                (service in res['Services'] or not service)
-               ]
+# Display resources with accessibility filter
+def display_resources(resources, city, zip_code, state, service, accessible_required):
+    filtered = []
+    for res in resources:
+        if not (city in res["City"].lower() or not city):
+            continue
+        if not (zip_code == res["ZIP"] or not zip_code):
+            continue
+        if not (state in res["State"].lower() or not state):
+            continue
+        if service and service not in res['Services']:
+            continue
+        if accessible_required is not None and res["WheelchairAccessible"] != accessible_required:
+            continue
+        filtered.append(res)
+
     if not filtered:
         st.warning("No resources found.")
         speak_text("No resources found.")
@@ -96,8 +104,18 @@ zip_code = st.text_input("Enter ZIP code:").strip()
 state = st.text_input("Enter state:").strip().lower()
 service = st.selectbox("Select service:", [""] + services)
 
+# New dropdown for accessibility
+accessibility_filter = st.selectbox("Require wheelchair accessible resource?", ["No preference", "Yes", "No"])
+
 if st.button("Search Resources"):
-    display_resources(resources, city, zip_code, state, service.lower())
+    if accessibility_filter == "Yes":
+        accessible_required = True
+    elif accessibility_filter == "No":
+        accessible_required = False
+    else:
+        accessible_required = None  # No preference
+
+    display_resources(resources, city, zip_code, state, service.lower(), accessible_required)
 
 # Reminder section
 st.header("Add Health Appointment Reminder")
