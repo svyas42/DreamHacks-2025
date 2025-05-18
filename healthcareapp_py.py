@@ -115,19 +115,19 @@ location = st.text_input("Location:").strip()
 phone = st.text_input("Phone number:").strip()
 
 if st.button("Add Reminder"):
-    reminders.append({
+    reminder = {
         "date_time": date_time,
         "description": description,
         "location": location,
         "phone": phone
-    })
+    }
+    reminders.append(reminder)
     st.success("Reminder added!")
 
 # List reminders
 st.header("Your Health Appointment Reminders")
-if st.button("List Reminders"):
-    if reminders:
-        for i, rem in enumerate(reminders, 1):
-            st.markdown(f"**{i}. {rem['date_time']} - {rem['description']} at {rem['location']} (Phone: {rem['phone']})**")
-    else:
-        st.warning("No reminders set.")
+for i, rem in enumerate(reminders, 1):
+    st.markdown(f"**{i}. {rem['date_time']} - {rem['description']} at {rem['location']} (Phone: {rem['phone']})**")
+
+if not reminders:
+    st.warning("No reminders set.")
