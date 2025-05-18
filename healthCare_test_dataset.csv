@@ -1,0 +1,25 @@
+Name,City,State,ZIP,Address,Phone,WheelchairAccessible,Hours,Services
+Raleigh Community Clinic,Raleigh,NC,27601,123 Health St,555-123-4567,Yes,Mon-Fri 8am-5pm,general clinic;vaccination;health screenings;primary care
+Cary Family Counseling,Cary,NC,27511,456 Wellness Ave,555-234-5678,No,Mon-Sat 9am-6pm,counseling;mental health;therapy;psychological support
+Durham Urgent Care,Durham,NC,27701,789 Medical Rd,555-345-6789,Yes,24/7,urgent care;emergency;primary care
+Chapel Hill Wellness Center,Chapel Hill,NC,27514,101 Wellness Blvd,555-456-7890,No,Mon-Fri 9am-7pm,health screenings;wellness;nutrition
+Greensboro Health Clinic,Greensboro,NC,27401,202 Clinic Ln,555-567-8901,Yes,Mon-Sun 8am-8pm,general clinic;primary care;immunization
+Baker and Bovenizer,Cary,NC,27518,212 Hill Dr,888-234-9863,No,Mon-Fri 8am-5pm,Orthodontist
+City Medical Center,Anytown,CA,91234,123 Main St,555-123-4567,Yes,24/7,general clinic;vaccination;health screenings;primary care
+Family Health Clinic,Springfield,IL,62704,456 Oak Ave,555-987-6543,Yes,8 AM - 6 PM,urgent care;emergency;primary care
+St. Luke's Hospital,Metroville,NY,10001,789 Broadway,555-246-8012,Yes,24/7,urgent care;emergency;primary care
+Community Urgent Care,Hillside,NJ,7205,234 Maple Dr,555-789-1234,Yes,9 AM - 9 PM,general clinic;primary care;immunization
+Women's Health Associates,Riverside,CA,92507,567 Pine Ln,555-345-6789,Yes,8 AM - 5 PM,general clinic;primary care;immunization
+Children's Clinic,Anytown,CA,91234,890 Elm St,555-456-7890,Yes,9 AM - 6 PM,urgent care;emergency;primary care
+Senior Care Center,Springfield,IL,62704,101 Oak Ave,555-567-8901,Yes,8 AM - 5 PM,counseling;mental health;therapy;psychological support
+Metroville Mental Health,Metroville,NY,10001,222 Broadway,555-678-9012,Yes,9 AM - 7 PM,counseling;mental health;therapy;psychological support
+Hillside Physical Therapy,Hillside,NJ,7205,345 Maple Dr,555-890-1234,Yes,7 AM - 7 PM,urgent care;emergency;primary care
+Riverside Dental Clinic,Riverside,CA,92507,678 Pine Ln,555-901-2345,No,8 AM - 5 PM,urgent care;emergency;primary care
+Anytown Eye Care,Anytown,CA,91234,901 Main St,555-012-3456,No,8 AM - 6 PM,general clinic;primary care;immunization
+Springfield Pharmacy,Springfield,IL,62704,112 Oak Ave,555-123-4567,No,9 AM - 8 PM,urgent care;emergency;primary care
+Metroville Medical Labs,Metroville,NY,10001,333 Broadway,555-234-5678,No,7 AM - 5 PM,counseling;mental health;therapy;psychological support
+Hillside Home Health,Hillside,NJ,7205,456 Maple Dr,555-345-6789,No,24/7,counseling;mental health;therapy;psychological support
+Riverside Hospice Care,Riverside,CA,92507,789 Pine Ln,555-456-7890,No,24/7,urgent care;emergency;primary care
+City Allergy Clinic,Anytown,CA,91234,123 First St,555-111-2222,No,8AM-5PM,general clinic;primary care;immunization
+Family Medical Group,Springfield,IL,62704,456 Second Ave,555-222-3333,Yes,7:30AM-6PM,urgent care;emergency;primary care
+St. Mary's Hospital,Metroville,NY,10002,789 Third Ave,555-333-4444,Yes,24/7,
