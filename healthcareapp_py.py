@@ -48,6 +48,7 @@ def display_resources(resources, city, zip_code, state, service, has_disability)
                 f"- Services: {', '.join(res['Services'])}\n"
             )
             st.markdown(info)
+            st.button(f"Hear Resource {i}", on_click=lambda: speak_text(info))
 
 # Load resources
 resources = load_resources("healthCare_test_dataset.csv")
@@ -127,7 +128,9 @@ if st.button("Add Reminder"):
 # List reminders
 st.header("Your Health Appointment Reminders")
 for i, rem in enumerate(reminders, 1):
-    st.markdown(f"**{i}. {rem['date_time']} - {rem['description']} at {rem['location']} (Phone: {rem['phone']})**")
+    rem_info = f"{rem['date_time']} - {rem['description']} at {rem['location']} (Phone: {rem['phone']})"
+    st.markdown(f"**{i}. {rem_info}**")
+    st.button(f"Hear Reminder {i}", on_click=lambda: speak_text(rem_info))
 
 if not reminders:
     st.warning("No reminders set.")
