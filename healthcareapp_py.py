@@ -1,7 +1,6 @@
 import streamlit as st
 import csv
 import os
-import streamlit as st
 from gtts import gTTS
 
 # Speak text using gTTS
@@ -65,7 +64,17 @@ st.header("Search for Resources")
 city = st.text_input("Enter city:").strip().lower()
 zip_code = st.text_input("Enter ZIP code:").strip()
 state = st.text_input("Enter state:").strip().lower()
-service = st.text_input("Enter service:").strip().lower()
+
+# Service drop-down
+services = [
+    "general clinic;vaccination;health screenings;primary care",
+    "counseling;mental health;therapy;psychological support",
+    "urgent care;emergency;primary care",
+    "health screenings;wellness;nutrition",
+    "general clinic;primary care;immunization",
+    "Orthodontist"
+]
+service = st.selectbox("Select service:", services)
 
 if st.button("Search Resources"):
     display_resources(resources, city, zip_code, state, service)
