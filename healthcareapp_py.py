@@ -67,11 +67,11 @@ state = st.text_input("Enter state:").strip().lower()
 
 # Service drop-down
 services = [
-    "general clinic;vaccination;health screenings;primary care",
-    "counseling;mental health;therapy;psychological support",
-    "urgent care;emergency;primary care",
-    "health screenings;wellness;nutrition",
-    "general clinic;primary care;immunization",
+    "general clinic","vaccination","health screenings","primary care",
+    "counseling","mental health","therapy","psychological support",
+    "urgent care","emergency",
+    "health screenings","wellness","nutrition",
+    "immunization",
     "Orthodontist"
 ]
 service = st.selectbox("Select service:", services)
