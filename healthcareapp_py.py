@@ -33,7 +33,8 @@ reminders = []
 # Streamlit UI
 st.title("Accessible Health Resource Finder and Reminder")
 
-
+# Prompt for voice assistance
+voice_assistance = st.radio("Do you want the website to be read to you?", ["No", "Yes"])
 
 # Accessibility settings
 st.header("Accessibility Settings")
