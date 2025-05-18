@@ -26,30 +26,6 @@ def load_resources(filename):
         st.error(f"Error loading resources: {e}")
         return []
 
-# Display resources
-def display_resources(resources, city, zip_code, state, service, has_disability):
-    filtered = [res for res in resources if
-                (city in res["City"].lower() or not city) and
-                (zip_code == res["ZIP"] or not zip_code) and
-                (state in res["State"].lower() or not state) and
-                (service in res['Services'] or not service)
-               ]
-    if not filtered:
-        st.warning("No resources found.")
-    else:
-        for i, res in enumerate(filtered, start=1):
-            accessible = "Yes" if res["WheelchairAccessible"] else "No"
-            info = (
-                f"**{i}. {res['Name']}**\n"
-                f"- Address: {res['Address']}\n"
-                f"- City: {res['City']}, State: {res['State']}, ZIP: {res['ZIP']}\n"
-                f"- Phone: {res['Phone']}\n"
-                f"- Wheelchair Accessible: {accessible}\n"
-                f"- Services: {', '.join(res['Services'])}\n"
-            )
-            st.markdown(info)
-            st.button(f"Hear Resource {i}", on_click=lambda: speak_text(info))
-
 # Load resources
 resources = load_resources("healthCare_test_dataset.csv")
 reminders = []
@@ -57,9 +33,10 @@ reminders = []
 # Streamlit UI
 st.title("Accessible Health Resource Finder and Reminder")
 
+
+
 # Accessibility settings
 st.header("Accessibility Settings")
-has_disability = st.radio("Do you have a disability?", ["No", "Yes"])
 font_size_choice = st.radio("Choose font size:", ["Normal", "Large"])
 color_blind_mode = st.checkbox("Enable color-blind friendly colors")
 
@@ -77,36 +54,33 @@ if font_size_choice == "Large":
 if color_blind_mode:
     st.markdown("""
     <style>
-    .css-18e3th9 {
-        background-color: #fffde7 !important;
-    }
-    button {
-        background-color: #0072B2 !important;
-        color: white !important;
-    }
-    a, .stMarkdown, .stText {
-        color: #D55E00 !important;
-    }
+    .css-18e3th9 {background-color: #fffde7 !important;}
+    button {background-color: #0072B2 !important; color: white !important;}
+    a, .stMarkdown, .stText {color: #D55E00 !important;}
     </style>
     """, unsafe_allow_html=True)
-
-# Service dropdown list
-services = [
-    "general clinic", "vaccination", "health screenings", "primary care",
-    "counseling", "mental health", "therapy", "psychological support",
-    "urgent care", "emergency", "wellness", "nutrition", "immunization",
-    "orthodontist"
-]
 
 # Search section
 st.header("Search for Resources")
 city = st.text_input("Enter city:").strip().lower()
 zip_code = st.text_input("Enter ZIP code:").strip()
 state = st.text_input("Enter state:").strip().lower()
+services = ["general clinic", "vaccination", "health screenings", "primary care", "counseling", "mental health", "therapy", "psychological support", "urgent care", "emergency", "wellness", "nutrition", "immunization", "orthodontist"]
 service = st.selectbox("Select service:", [""] + services)
 
 if st.button("Search Resources"):
-    display_resources(resources, city, zip_code, state, service.lower(), has_disability)
+    filtered = [res for res in resources if (city in res["City"].lower() or not city) and (zip_code == res["ZIP"] or not zip_code) and (state in res["State"].lower() or not state) and (service in res['Services'] or not service)]
+    if not filtered:
+        st.warning("No resources found.")
+        if voice_assistance == "Yes":
+            speak_text("No resources found.")
+    else:
+        for i, res in enumerate(filtered, start=1):
+            accessible = "Yes" if res["WheelchairAccessible"] else "No"
+            info = f"**{i}. {res['Name']}**\n- Address: {res['Address']}\n- City: {res['City']}, State: {res['State']}, ZIP: {res['ZIP']}\n- Phone: {res['Phone']}\n- Wheelchair Accessible: {accessible}\n- Services: {', '.join(res['Services'])}"
+            st.markdown(info)
+            if voice_assistance == "Yes":
+                speak_text(f"Resource {i}: {res['Name']}, located at {res['Address']}, {res['City']}, {res['State']}.")
 
 # Reminder section
 st.header("Add Health Appointment Reminder")
@@ -116,21 +90,19 @@ location = st.text_input("Location:").strip()
 phone = st.text_input("Phone number:").strip()
 
 if st.button("Add Reminder"):
-    reminder = {
-        "date_time": date_time,
-        "description": description,
-        "location": location,
-        "phone": phone
-    }
-    reminders.append(reminder)
+    reminders.append({"date_time": date_time, "description": description, "location": location, "phone": phone})
     st.success("Reminder added!")
+    if voice_assistance == "Yes":
+        speak_text("Reminder added!")
 
 # List reminders
 st.header("Your Health Appointment Reminders")
-for i, rem in enumerate(reminders, 1):
-    rem_info = f"{rem['date_time']} - {rem['description']} at {rem['location']} (Phone: {rem['phone']})"
-    st.markdown(f"**{i}. {rem_info}**")
-    st.button(f"Hear Reminder {i}", on_click=lambda: speak_text(rem_info))
-
-if not reminders:
+if reminders:
+    for i, rem in enumerate(reminders, 1):
+        st.markdown(f"**{i}. {rem['date_time']} - {rem['description']} at {rem['location']} (Phone: {rem['phone']})**")
+        if voice_assistance == "Yes":
+            speak_text(f"Reminder {i}: {rem['description']} at {rem['location']} on {rem['date_time']}. ")
+else:
     st.warning("No reminders set.")
+    if voice_assistance == "Yes":
+        speak_text("No reminders set.")
