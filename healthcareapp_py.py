@@ -54,7 +54,7 @@ def display_resources(resources, city, zip_code, state, service):
             speak_text(f"Resource {i}: {res['Name']}, located at {res['Address']}, {res['City']}, {res['State']}.")
 
 # Load resources
-resources = load_resources("resources.csv")
+resources = load_resources("healthCare_test_dataset.csv")
 reminders = []
 
 # Streamlit UI
