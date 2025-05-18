@@ -27,7 +27,7 @@ def load_resources(filename):
         return []
 
 # Display resources
-def display_resources(resources, city, zip_code, state, service, has_disability):
+def display_resources(resources, city, zip_code, state, service):
     filtered = [res for res in resources if
                 (city in res["City"].lower() or not city) and
                 (zip_code == res["ZIP"] or not zip_code) and
@@ -36,6 +36,7 @@ def display_resources(resources, city, zip_code, state, service, has_disability)
                ]
     if not filtered:
         st.warning("No resources found.")
+        speak_text("No resources found.")
     else:
         for i, res in enumerate(filtered, start=1):
             accessible = "Yes" if res["WheelchairAccessible"] else "No"
@@ -48,8 +49,7 @@ def display_resources(resources, city, zip_code, state, service, has_disability)
                 f"- Services: {', '.join(res['Services'])}\n"
             )
             st.markdown(info)
-            if st.button(f"Hear Resource {i}"):
-                speak_text(info)
+            speak_text(f"Resource {i}: {res['Name']}, located at {res['Address']}, {res['City']}, {res['State']}.")
 
 # Load resources
 resources = load_resources("healthCare_test_dataset.csv")
@@ -60,11 +60,9 @@ st.title("Accessible Health Resource Finder and Reminder")
 
 # Accessibility settings
 st.header("Accessibility Settings")
-has_disability = st.radio("Do you have a disability?", ["No", "Yes"])
 font_size_choice = st.radio("Choose font size:", ["Normal", "Large"])
 color_blind_mode = st.checkbox("Enable color-blind friendly colors")
 
-# Adjust font size
 if font_size_choice == "Large":
     st.markdown("""
         <style>
@@ -74,21 +72,13 @@ if font_size_choice == "Large":
         </style>
         """, unsafe_allow_html=True)
 
-# Apply color-blind friendly colors if enabled
 if color_blind_mode:
     st.markdown("""
-    <style>
-    .css-18e3th9 {
-        background-color: #fffde7 !important;
-    }
-    button {
-        background-color: #0072B2 !important;
-        color: white !important;
-    }
-    a, .stMarkdown, .stText {
-        color: #D55E00 !important;
-    }
-    </style>
+        <style>
+        .css-18e3th9 { background-color: #fffde7 !important; }
+        button { background-color: #0072B2 !important; color: white !important; }
+        a, .stMarkdown, .stText { color: #D55E00 !important; }
+        </style>
     """, unsafe_allow_html=True)
 
 # Service dropdown list
@@ -107,7 +97,7 @@ state = st.text_input("Enter state:").strip().lower()
 service = st.selectbox("Select service:", [""] + services)
 
 if st.button("Search Resources"):
-    display_resources(resources, city, zip_code, state, service.lower(), has_disability)
+    display_resources(resources, city, zip_code, state, service.lower())
 
 # Reminder section
 st.header("Add Health Appointment Reminder")
@@ -117,22 +107,17 @@ location = st.text_input("Location:").strip()
 phone = st.text_input("Phone number:").strip()
 
 if st.button("Add Reminder"):
-    reminder = {
+    reminders.append({
         "date_time": date_time,
         "description": description,
         "location": location,
         "phone": phone
-    }
-    reminders.append(reminder)
+    })
     st.success("Reminder added!")
+    speak_text("Reminder added!")
 
 # List reminders
 st.header("Your Health Appointment Reminders")
 for i, rem in enumerate(reminders, 1):
-    rem_info = f"{rem['date_time']} - {rem['description']} at {rem['location']} (Phone: {rem['phone']})"
-    st.markdown(f"**{i}. {rem_info}**")
-    if st.button(f"Hear Reminder {i}"):
-        speak_text(rem_info)
-
-if not reminders:
-    st.warning("No reminders set.")
+    st.markdown(f"**{i}. {rem['date_time']} - {rem['description']} at {rem['location']} (Phone: {rem['phone']})**")
+    speak_text(f"Reminder {i}: {rem['description']} at {rem['location']} on {rem['date_time']}.")
