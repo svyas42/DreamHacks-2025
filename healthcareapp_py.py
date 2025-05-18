@@ -32,7 +32,7 @@ def display_resources(resources, city, zip_code, state, service, has_disability)
                 (city in res["City"].lower() or not city) and
                 (zip_code == res["ZIP"] or not zip_code) and
                 (state in res["State"].lower() or not state) and
-                (any(service in s for s in res['Services']) or not service)
+                (service in res['Services'] or not service)
                ]
     if not filtered:
         st.warning("No resources found.")
@@ -96,15 +96,23 @@ if color_blind_mode:
     </style>
     """, unsafe_allow_html=True)
 
+# Service dropdown list cleaned & flattened
+services = [
+    "general clinic", "vaccination", "health screenings", "primary care",
+    "counseling", "mental health", "therapy", "psychological support",
+    "urgent care", "emergency", "wellness", "nutrition", "immunization",
+    "orthodontist"
+]
+
 # Search section
 st.header("Search for Resources")
 city = st.text_input("Enter city:").strip().lower()
 zip_code = st.text_input("Enter ZIP code:").strip()
 state = st.text_input("Enter state:").strip().lower()
-service = st.text_input("Enter service:").strip().lower()
+service = st.selectbox("Select service:", [""] + services)  # Empty option for no filter
 
 if st.button("Search Resources"):
-    display_resources(resources, city, zip_code, state, service, has_disability)
+    display_resources(resources, city, zip_code, state, service.lower(), has_disability)
 
 # Reminder section
 st.header("Add Health Appointment Reminder")
@@ -121,7 +129,7 @@ if st.button("Add Reminder"):
         "phone": phone
     })
     st.success("Reminder added!")
-    if has_disability:
+    if has_disability == "Yes":
         speak_text("Reminder added!")
 
 # List reminders
@@ -130,9 +138,9 @@ if st.button("List Reminders"):
     if reminders:
         for i, rem in enumerate(reminders, 1):
             st.markdown(f"**{i}. {rem['date_time']} - {rem['description']} at {rem['location']} (Phone: {rem['phone']})**")
-            if has_disability:
+            if has_disability == "Yes":
                 speak_text(f"Reminder {i}: {rem['description']} at {rem['location']} on {rem['date_time']}.")
     else:
         st.warning("No reminders set.")
-        if has_disability:
+        if has_disability == "Yes":
             speak_text("No reminders set.")
